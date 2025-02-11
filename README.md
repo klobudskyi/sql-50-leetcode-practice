@@ -1,6 +1,6 @@
 # sql-50-leetcode-practice
 ## SELECT:
-1757. Recyclable and Low Fat Products
+### 1757. Recyclable and Low Fat Products
 ```sql
 SELECT
     product_id
