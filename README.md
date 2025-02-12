@@ -72,3 +72,28 @@ WHERE
     AND t.visit_id IS NULL
 GROUP BY 1;
 ```
+### 197. Rising Temperature
+```sql
+
+```
+### 570. Managers with at Least 5 Direct Reports
+```sql
+WITH status_manager AS (
+
+    SELECT
+        managerId
+        , CASE
+                WHEN COUNT(*) >= 5 THEN 'busy_manager'
+                ELSE 'free_manager'
+          END AS managerStatus
+    FROM Employee
+    WHERE managerId IS NOT NULL
+    GROUP BY 1
+
+)
+
+SELECT name
+FROM Employee e
+JOIN status_manager s ON s.managerId = e.id
+WHERE managerStatus = 'busy_manager';
+```
