@@ -74,7 +74,39 @@ GROUP BY 1;
 ```
 ### 197. Rising Temperature
 ```sql
+-- Write your PostgreSQL query statement below
 
+???
+
+WITH temperature AS (
+    
+    SELECT
+        id
+        , recordDate AS date
+        , temperature AS temp
+        , LAG(temperature,-1) OVER(ORDER BY recordDate) AS temp_new
+        , CASE
+            WHEN (LAG(temperature,-1) OVER(ORDER BY recordDate) - temperature) < 0 THEN 'lower_temp'
+            WHEN (LAG(temperature,-1) OVER(ORDER BY recordDate) - temperature) > 0 THEN 'higher_temp'
+            ELSE NULL
+        END AS temp_diff
+    FROM Weather
+
+)
+, analysis AS (
+
+    SELECT
+        id
+        , date
+        , temp
+        , LAG(temp_diff,1) OVER(ORDER BY date) AS changes
+    FROM temperature
+
+)
+
+SELECT id
+FROM analysis
+WHERE changes = 'higher_temp';
 ```
 ### 570. Managers with at Least 5 Direct Reports
 ```sql
