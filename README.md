@@ -108,6 +108,51 @@ SELECT id
 FROM analysis
 WHERE changes = 'higher_temp';
 ```
+### 1661. Average Time of Process per Machine
+```sql
+
+???
+
+WITH start AS (
+
+    SELECT
+        *
+        , ROW_NUMBER() OVER () AS activity_id
+    FROM Activity
+    WHERE activity_type = 'start'
+
+)
+
+, finish AS (
+
+    SELECT
+        *
+        , ROW_NUMBER() OVER() AS activity_id
+    FROM Activity
+    WHERE activity_type = 'end'
+
+)
+
+SELECT
+    DISTINCT s.machine_id
+    , AVG(f.timestamp - s.timestamp) OVER (PARTITION BY s.machine_id) AS processing_time
+FROM start s
+JOIN finish f ON f.activity_id = s.activity_id
+GROUP BY s.machine_id, f.timestamp, s.timestamp
+
+```
+### 577. Employee Bonus
+```sql
+
+???
+
+SELECT
+    e.name
+    , b.bonus
+FROM Employee e
+LEFT JOIN Bonus b ON b.empId = e.empId
+WHERE b.bonus < 1000 OR b.bonus IS NULL
+```
 ### 570. Managers with at Least 5 Direct Reports
 ```sql
 WITH status_manager AS (
